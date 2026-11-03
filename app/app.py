@@ -57,7 +57,7 @@ def get_stats():
 		lines.append(f"Hero: {row['hero']}<br>Games: {row['games']}<br>WR: {round(winrate)}%<br>")
 	return "<br>".join(lines)
 
-@app.route("/stats/view")
+@app.route("/stats/view") # New view page created by claude code, my code is in the pure /stats page
 def stats_view():
 	# Same query as /stats: one row per hero with games played and wins.
 	db = get_db()
