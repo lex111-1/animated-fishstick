@@ -17,5 +17,7 @@ The frontend (template + css for /stats/view) were generated with Claude code, t
 # Setup
 
 Create and activate a python venv, then run `pip install -r requirements.txt`
+
 Run `flask --app app run`
+
 To run the tests `pytest -v`
