@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import sqlite3
 app = Flask(__name__)
 
@@ -57,13 +57,42 @@ def get_stats():
 		lines.append(f"Hero: {row['hero']}<br>Games: {row['games']}<br>WR: {round(winrate)}%<br>")
 	return "<br>".join(lines)
 
+@app.route("/stats/view")
+def stats_view():
+	# Same query as /stats: one row per hero with games played and wins.
+	db = get_db()
+	db.row_factory = sqlite3.Row
+	rows = db.execute("""
+		SELECT hero,
+			COUNT(*) AS games,
+			SUM(CASE WHEN outcome = 'win' THEN 1 ELSE 0 END) AS wins
+		FROM matches
+		GROUP BY hero
+		ORDER BY games DESC
+	""").fetchall()
+
+	# Turn each database row into a plain dict and add the win rate,
+	# so the template only has to display values, not calculate them.
+	heroes = []
+	for row in rows:
+		heroes.append({
+			"hero": row["hero"],
+			"games": row["games"],
+			"wins": row["wins"],
+			"winrate": round(row["wins"] / row["games"] * 100),
+		})
+
+	# Flask looks for this file in the templates/ folder and fills it in
+	# with the "heroes" list.
+	return render_template("stats.html", heroes=heroes)
+
 @app.route("/health")
 def health():
 	return "ok"
 
 @app.route ("/")
 def home():
-	return  '<h1>Overwatch Tracker</h1><a href="/health">Check health</a>'
+	return  '<h1>Overwatch Tracker</h1><a href="/health">Check health</a> | <a href="/stats/view">View stats</a>'
  	
 if __name__ == "__main__":
     db = get_db()

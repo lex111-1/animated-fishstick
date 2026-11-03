@@ -1,0 +1,72 @@
+/* Colours in one place, so they're easy to change later */
+:root {
+	--bg: #121418;      /* page background */
+	--panel: #1c1f26;   /* table background */
+	--text: #e6e6e6;    /* main text */
+	--muted: #2a2e37;   /* borders and lines */
+	--accent: #ff9c00;  /* orange accent */
+}
+
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--text);
+	font-family: system-ui, sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+/* Centre the content and keep a gap at the screen edges on phones */
+main {
+	max-width: 640px;
+	margin: 0 auto;
+	padding: 24px 16px;
+}
+
+h1 {
+	color: var(--accent);
+	margin-top: 0;
+}
+
+a {
+	color: var(--accent);
+}
+
+/* The stats table fills the width and looks like one panel */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	background: var(--panel);
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+th, td {
+	padding: 12px;
+	text-align: left;
+	border-bottom: 1px solid var(--muted);
+}
+
+th {
+	color: var(--accent);
+	font-size: 14px;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+/* Right-align number columns so digits line up */
+.num {
+	text-align: right;
+}
+
+/* Highlight the row under the mouse (desktop) */
+tbody tr:hover {
+	background: var(--muted);
+}
+
+/* Tighter spacing on narrow phone screens */
+@media (max-width: 400px) {
+	th, td {
+		padding: 8px 6px;
+	}
+}
