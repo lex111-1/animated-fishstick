@@ -1,5 +1,6 @@
 # animated-fishstick
-Cheese Devops testing, learning as i go
+
+Devops testing, learning as i go
 
 Did overthewire 0-10
 
