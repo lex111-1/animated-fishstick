@@ -9,3 +9,4 @@ mkdir -p "$BackupDestination"
 
 cp -r "$FolderToBackup" "$BackupName"
 
+echo "Backup completed, sent to $BackupDestination at $BackupTime"
