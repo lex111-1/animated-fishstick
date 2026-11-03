@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<!-- Makes the page scale properly on phones instead of showing a tiny desktop view -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Hero Stats - Overwatch Tracker</title>
+	<!-- url_for builds the path to app/static/style.css for us -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+	<main>
+		<h1>Hero Stats</h1>
+		<p><a href="/">&larr; Home</a></p>
+
+		{# "heroes" is the list passed in from stats_view() in app.py #}
+		{% if heroes %}
+		<table>
+			<thead>
+				<tr>
+					<th>Hero</th>
+					<th class="num">Games</th>
+					<th class="num">Wins</th>
+					<th class="num">Win rate</th>
+				</tr>
+			</thead>
+			<tbody>
+				{# One table row per hero #}
+				{% for h in heroes %}
+				<tr>
+					<td>{{ h.hero }}</td>
+					<td class="num">{{ h.games }}</td>
+					<td class="num">{{ h.wins }}</td>
+					<td class="num">{{ h.winrate }}%</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% else %}
+		<p>No matches logged yet. POST some to /matches first.</p>
+		{% endif %}
+	</main>
+</body>
+</html>
