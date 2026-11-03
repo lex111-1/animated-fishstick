@@ -36,6 +36,27 @@ def list_matches():
 	rows = db.execute("SELECT * FROM matches").fetchall()
 	return jsonify([dict(row) for row in rows])
 
+@app.route("/stats")
+def get_stats():
+	db = get_db()
+	db.row_factory = sqlite3.Row
+	stats = db.execute("""
+	SELECT hero,
+	 	COUNT(*) AS games, 
+	 	SUM(CASE WHEN outcome = 'win' THEN 1 ELSE 0 END) AS wins
+	 FROM matches 
+	 GROUP BY hero 
+	 ORDER BY games DESC
+	 				  """).fetchall()
+
+
+	
+	lines = []
+	for row in stats:
+		winrate = row['wins'] / row['games'] * 100
+		lines.append(f"Hero: {row['hero']}<br>Games: {row['games']}<br>WR: {round(winrate)}%<br>")
+	return "<br>".join(lines)
+
 @app.route("/health")
 def health():
 	return "ok"
