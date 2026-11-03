@@ -28,7 +28,14 @@ def add_match():
     db.execute("INSERT INTO matches (hero, map_name, time, date, outcome) VALUES (?, ?, ?, ?, ?)", (hero, map_name, time, date, outcome))
     db.commit()
     return jsonify({"status": "added"}), 201
-	
+
+@app.route("/matches")
+def list_matches():
+	db = get_db()
+	db.row_factory = sqlite3.Row
+	rows = db.execute("SELECT * FROM matches").fetchall()
+	return jsonify([dict(row) for row in rows])
+
 @app.route("/health")
 def health():
 	return "ok"
